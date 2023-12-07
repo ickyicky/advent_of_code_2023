@@ -9,8 +9,9 @@ lazy_static! {
 }
 
 
-fn process_line(prev_line: &String, cur_line: &String, next_line: &String) -> i32 {
-    let mut sum = 0;
+fn process_line(prev_line: &String, cur_line: &String, next_line: &String) -> (i32, i32) {
+    let mut gear_ratio = 0;
+    let mut part_number_sum = 0;
 
     let lines = [
         prev_line,
@@ -37,11 +38,45 @@ fn process_line(prev_line: &String, cur_line: &String, next_line: &String) -> i3
         }
 
         if adjucent.len() == 2 {
-            sum += adjucent[0] * adjucent[1];
+            gear_ratio += adjucent[0] * adjucent[1];
         }
     }
 
-    return sum;
+    'outer: for number in NUMBER_REGEX.find_iter(cur_line) {
+        let number_parsed = number.as_str().parse::<i32>().expect("attemted to parse invalid number");
+        let mut start = number.start();
+        let end = number.end();
+
+        if let Some(start_minus_one) = usize::checked_sub(start, 1) {
+            start = start_minus_one;
+            if let Some(prev_char) = cur_line.chars().nth(start) {
+                if prev_char != '.' {
+                    part_number_sum += number_parsed;
+                    continue 'outer;
+                }
+            }
+        }
+
+        if let Some(next_char) = cur_line.chars().nth(end) {
+            if next_char != '.' {
+                part_number_sum += number_parsed;
+                continue 'outer;
+            }
+        }
+
+        for i in start..end + 1 {
+            for line in [prev_line, next_line].iter() {
+                if let Some(char) = line.chars().nth(i) {
+                    if char != '.' {
+                        part_number_sum += number_parsed;
+                        continue 'outer;
+                    }
+                }
+            }
+        }
+    }
+
+    return (part_number_sum, gear_ratio);
 }
 
 
@@ -49,14 +84,18 @@ fn main() {
     let input_path = read_arg(1, "input path");
     let mut prev_line = String::new();
     let mut cur_line = "".to_string();
-    let mut sum = 0;
+
+    let mut gear_ratios = 0;
+    let mut part_number_sum = 0;
 
     if let Ok(lines) = read_lines(input_path) {
         for (i, line) in lines.enumerate() {
             if let Ok(ip) = line {
 
                 if i > 0 {
-                    sum += process_line(&prev_line, &cur_line, &ip);
+                    let (cur_part_number_sum, cur_gear_ratios) = process_line(&prev_line, &cur_line, &ip);
+                    part_number_sum += cur_part_number_sum;
+                    gear_ratios += cur_gear_ratios;
                 }
 
                 prev_line = cur_line;
@@ -65,6 +104,10 @@ fn main() {
         }
     }
 
-    sum += process_line(&prev_line, &cur_line, &String::new());
-    println!("sum: {}", sum);
+    let (cur_part_number_sum, cur_gear_ratios) = process_line(&prev_line, &cur_line, &String::new());
+    part_number_sum += cur_part_number_sum;
+    gear_ratios += cur_gear_ratios;
+
+    println!("part_number_sum: {}", part_number_sum);
+    println!("gear_ratios: {}", gear_ratios);
 }
