@@ -1,23 +1,18 @@
 use advent_of_code_2023::utils::argparse::read_arg;
 use advent_of_code_2023::utils::file_reader::read_lines;
-use regex::Regex;
 use lazy_static::lazy_static;
+use regex::Regex;
 
 lazy_static! {
     static ref NUMBER_REGEX: Regex = Regex::new(r"(\d+)").expect("invalid regex");
     static ref GREAR_REGEX: Regex = Regex::new(r"(\*{1})").expect("invalid regex");
 }
 
-
 fn process_line(prev_line: &String, cur_line: &String, next_line: &String) -> (i32, i32) {
     let mut gear_ratio = 0;
     let mut part_number_sum = 0;
 
-    let lines = [
-        prev_line,
-        cur_line,
-        next_line,
-    ];
+    let lines = [prev_line, cur_line, next_line];
 
     let gears = GREAR_REGEX.find_iter(cur_line);
 
@@ -32,7 +27,12 @@ fn process_line(prev_line: &String, cur_line: &String, next_line: &String) -> (i
                 };
 
                 if number_start <= gear.start() && gear.start() <= number.end() {
-                    adjucent.push(number.as_str().parse::<i32>().expect("attemted to parse invalid number"));
+                    adjucent.push(
+                        number
+                            .as_str()
+                            .parse::<i32>()
+                            .expect("attemted to parse invalid number"),
+                    );
                 }
             }
         }
@@ -43,7 +43,10 @@ fn process_line(prev_line: &String, cur_line: &String, next_line: &String) -> (i
     }
 
     'outer: for number in NUMBER_REGEX.find_iter(cur_line) {
-        let number_parsed = number.as_str().parse::<i32>().expect("attemted to parse invalid number");
+        let number_parsed = number
+            .as_str()
+            .parse::<i32>()
+            .expect("attemted to parse invalid number");
         let mut start = number.start();
         let end = number.end();
 
@@ -79,7 +82,6 @@ fn process_line(prev_line: &String, cur_line: &String, next_line: &String) -> (i
     (part_number_sum, gear_ratio)
 }
 
-
 fn main() {
     let input_path = read_arg(1, "input path");
     let mut prev_line = String::new();
@@ -91,9 +93,9 @@ fn main() {
     if let Ok(lines) = read_lines(input_path) {
         for (i, line) in lines.enumerate() {
             if let Ok(ip) = line {
-
                 if i > 0 {
-                    let (cur_part_number_sum, cur_gear_ratios) = process_line(&prev_line, &cur_line, &ip);
+                    let (cur_part_number_sum, cur_gear_ratios) =
+                        process_line(&prev_line, &cur_line, &ip);
                     part_number_sum += cur_part_number_sum;
                     gear_ratios += cur_gear_ratios;
                 }
@@ -104,7 +106,8 @@ fn main() {
         }
     }
 
-    let (cur_part_number_sum, cur_gear_ratios) = process_line(&prev_line, &cur_line, &String::new());
+    let (cur_part_number_sum, cur_gear_ratios) =
+        process_line(&prev_line, &cur_line, &String::new());
     part_number_sum += cur_part_number_sum;
     gear_ratios += cur_gear_ratios;
 

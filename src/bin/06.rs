@@ -1,6 +1,6 @@
 use clap::Parser;
-use regex::Regex;
 use lazy_static::lazy_static;
+use regex::Regex;
 
 use advent_of_code_2023::utils::file_reader::read_lines;
 
@@ -8,8 +8,7 @@ lazy_static! {
     static ref NUMBER_REGEX: Regex = Regex::new(r"(\d+)").expect("invalid regex");
 }
 
-
-fn parse_numbers(line: &String) -> Vec::<u64> {
+fn parse_numbers(line: &String) -> Vec<u64> {
     let mut numbers = vec![];
 
     for cap in NUMBER_REGEX.captures_iter(line) {
@@ -19,8 +18,7 @@ fn parse_numbers(line: &String) -> Vec::<u64> {
     numbers
 }
 
-
-fn solve_equation(a: f64, b: f64, c: f64) -> Option::<(u64, u64)> {
+fn solve_equation(a: f64, b: f64, c: f64) -> Option<(u64, u64)> {
     let delta = b * b - 4.0 * a * c;
 
     if delta < 0.0 {
@@ -66,7 +64,6 @@ fn solve_equation(a: f64, b: f64, c: f64) -> Option::<(u64, u64)> {
     Some((start, end))
 }
 
-
 fn solver(t: u64, d: u64) -> u64 {
     if let Some((x1, x2)) = solve_equation(1.0, -(t as f64), d as f64) {
         return x2 - x1 + 1;
@@ -75,17 +72,15 @@ fn solver(t: u64, d: u64) -> u64 {
     0
 }
 
-
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    #[arg(index=1)]
+    #[arg(index = 1)]
     input_file: String,
 
     #[arg(short, long, default_value_t = false)]
     ignore_spaces: bool,
 }
-
 
 fn main() {
     let args = Args::parse();
@@ -96,20 +91,17 @@ fn main() {
     let mut times_str = lines
         .next()
         .expect("first line should contain numbers")
-        .expect("first line should contain numbers")
-    ;
+        .expect("first line should contain numbers");
 
     let mut distances_str = lines
         .next()
         .expect("first line should contain numbers")
-        .expect("first line should contain numbers")
-    ;
+        .expect("first line should contain numbers");
 
     if args.ignore_spaces {
         times_str = times_str.replace(' ', "");
         distances_str = distances_str.replace(' ', "");
     }
-
 
     let times = parse_numbers(&times_str);
     let distances = parse_numbers(&distances_str);

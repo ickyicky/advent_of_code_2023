@@ -1,11 +1,7 @@
 use advent_of_code_2023::utils::argparse::read_arg;
 use advent_of_code_2023::utils::file_reader::read_lines;
 
-
-fn process_line(
-    line: String,
-    digits_map: &[(&str, u32)]
-) -> Option<u32> {
+fn process_line(line: String, digits_map: &[(&str, u32)]) -> Option<u32> {
     let mut temp = line;
     let mut first_num = None;
     let mut last_num = None;
@@ -15,7 +11,7 @@ fn process_line(
         let first_char = temp.chars().next().unwrap();
         if first_char.is_ascii_digit() {
             first_num = Some(first_char.to_digit(10).unwrap());
-            break
+            break;
         } else {
             let mut found_match = false;
 
@@ -23,12 +19,12 @@ fn process_line(
                 if temp.starts_with(word) {
                     first_num = Some(*num);
                     found_match = true;
-                    break
+                    break;
                 }
             }
 
             if found_match {
-                break
+                break;
             }
         }
 
@@ -40,7 +36,7 @@ fn process_line(
         let last_char = temp.chars().nth(temp.len() - 1).unwrap();
         if last_char.is_ascii_digit() {
             last_num = Some(last_char.to_digit(10).unwrap());
-            break
+            break;
         } else {
             let mut found_match = false;
 
@@ -48,12 +44,12 @@ fn process_line(
                 if temp.ends_with(word) {
                     last_num = Some(*num);
                     found_match = true;
-                    break
+                    break;
                 }
             }
 
             if found_match {
-                break
+                break;
             }
         }
 
@@ -67,7 +63,6 @@ fn process_line(
 
     None
 }
-
 
 fn main() {
     let input_path = read_arg(1, "input path");
@@ -84,7 +79,7 @@ fn main() {
         ("nine", 9),
     ];
 
-    let mut sum = 0 ;
+    let mut sum = 0;
 
     if let Ok(lines) = read_lines(input_path) {
         for line in lines {

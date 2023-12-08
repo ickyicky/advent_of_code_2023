@@ -1,8 +1,7 @@
-use advent_of_code_2023::utils::argparse::{read_arg,parse_arg};
+use advent_of_code_2023::utils::argparse::{parse_arg, read_arg};
 use advent_of_code_2023::utils::file_reader::read_lines;
-use regex::Regex;
 use lazy_static::lazy_static;
-
+use regex::Regex;
 
 struct Game {
     id: u32,
@@ -11,13 +10,11 @@ struct Game {
     max_blue: u32,
 }
 
-
 impl Game {
-    fn power (&self) -> u32 {
+    fn power(&self) -> u32 {
         self.max_red * self.max_green * self.max_blue
     }
 }
-
 
 lazy_static! {
     static ref GAME_REGEX: Regex = Regex::new(r"Game (\d+)").expect("invalid regex");
@@ -26,13 +23,16 @@ lazy_static! {
     static ref RED_REGEX: Regex = Regex::new(r"(\d+) red").expect("invalid regex");
 }
 
-
 fn max_matching(line: &String, regex: &Regex) -> u32 {
-    let max = regex.captures_iter(line).map(
-        |c| c.extract::<1>().1[0]
-        .parse::<u32>()
-        .expect("invalid number found with regex")
-    ).max().expect("no match found");
+    let max = regex
+        .captures_iter(line)
+        .map(|c| {
+            c.extract::<1>().1[0]
+                .parse::<u32>()
+                .expect("invalid number found with regex")
+        })
+        .max()
+        .expect("no match found");
 
     max
 }
@@ -51,14 +51,13 @@ fn process_line(line: &String) -> Game {
     }
 }
 
-
 fn main() {
     let input_path = read_arg(1, "input path");
     let red = parse_arg::<u32>(2, "red");
     let green = parse_arg::<u32>(3, "green");
     let blue = parse_arg::<u32>(4, "blue");
 
-    let mut sum = 0 ;
+    let mut sum = 0;
     let mut total_power = 0;
 
     if let Ok(lines) = read_lines(input_path) {

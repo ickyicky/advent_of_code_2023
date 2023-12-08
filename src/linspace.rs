@@ -4,12 +4,10 @@ pub struct Linspace {
     len: u64,
 }
 
-
 #[derive(Debug)]
 pub struct LinspaceUnion {
     linspaces: Vec<Linspace>,
 }
-
 
 impl Linspace {
     pub fn end(&self) -> u64 {
@@ -25,13 +23,9 @@ impl Linspace {
     }
 
     pub fn new(start: u64, len: u64) -> Linspace {
-        Linspace {
-            start,
-            len,
-        }
+        Linspace { start, len }
     }
 }
-
 
 impl Default for LinspaceUnion {
     fn default() -> Self {
@@ -41,9 +35,7 @@ impl Default for LinspaceUnion {
 
 impl LinspaceUnion {
     pub fn new() -> LinspaceUnion {
-        LinspaceUnion {
-            linspaces: vec![],
-        }
+        LinspaceUnion { linspaces: vec![] }
     }
 
     pub fn push(&mut self, linspace: Linspace) {
@@ -63,14 +55,24 @@ impl LinspaceUnion {
     }
 
     pub fn min(&self) -> u64 {
-        return self.linspaces.iter().map(|linspace| linspace.start).min().unwrap();
+        return self
+            .linspaces
+            .iter()
+            .map(|linspace| linspace.start)
+            .min()
+            .unwrap();
     }
 
     pub fn max(&self) -> u64 {
-        return self.linspaces.iter().map(|linspace| linspace.end()).max().unwrap();
+        return self
+            .linspaces
+            .iter()
+            .map(|linspace| linspace.end())
+            .max()
+            .unwrap();
     }
 
-    pub fn extract(&mut self, start: u64, len: u64) -> Option::<LinspaceUnion> {
+    pub fn extract(&mut self, start: u64, len: u64) -> Option<LinspaceUnion> {
         let mut linspaces = vec![];
         let mut to_remove = vec![];
         let mut to_add = vec![];
@@ -78,37 +80,28 @@ impl LinspaceUnion {
         let end = start + len - 1;
 
         for (i, linspace) in self.linspaces.iter().enumerate() {
-            if (linspace.start >= start && linspace.start <= end) ||
-               (linspace.end() >= start && linspace.end() <= end)
+            if (linspace.start >= start && linspace.start <= end)
+                || (linspace.end() >= start && linspace.end() <= end)
             {
                 let start = u64::max(linspace.start, start);
                 let end = u64::min(linspace.end(), end);
                 let len = end - start + 1;
 
                 to_remove.push(i);
-                linspaces.push(
-                    Linspace {
-                        start,
-                        len,
-                    }
-                );
+                linspaces.push(Linspace { start, len });
 
                 if start > linspace.start {
-                    to_add.push(
-                        Linspace {
-                            start: linspace.start,
-                            len: start - linspace.start,
-                        }
-                    );
+                    to_add.push(Linspace {
+                        start: linspace.start,
+                        len: start - linspace.start,
+                    });
                 }
 
                 if end < linspace.end() {
-                    to_add.push(
-                        Linspace {
-                            start: end + 1,
-                            len: linspace.end() - end,
-                        }
-                    );
+                    to_add.push(Linspace {
+                        start: end + 1,
+                        len: linspace.end() - end,
+                    });
                 }
             }
         }
@@ -122,11 +115,7 @@ impl LinspaceUnion {
                 self.linspaces.push(linspace);
             }
 
-            return Some(
-                LinspaceUnion {
-                    linspaces,
-                }
-            );
+            return Some(LinspaceUnion { linspaces });
         }
 
         None

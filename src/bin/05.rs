@@ -1,17 +1,15 @@
-use std::io::Error;
 use clap::Parser;
-use regex::Regex;
 use lazy_static::lazy_static;
+use regex::Regex;
+use std::io::Error;
 
-use advent_of_code_2023::utils::file_reader::read_lines;
 use advent_of_code_2023::linspace::{Linspace, LinspaceUnion};
-
+use advent_of_code_2023::utils::file_reader::read_lines;
 
 lazy_static! {
     static ref NUMBER_REGEX: Regex = Regex::new(r"(\d+)").expect("invalid regex");
     static ref MAP_REGEX: Regex = Regex::new(r"\w+-to-(\w+) map:").expect("invalid regex");
 }
-
 
 struct MapSegment {
     target: u64,
@@ -19,9 +17,8 @@ struct MapSegment {
     range: u64,
 }
 
-
 impl MapSegment {
-    fn map(&self, ln_union: &mut LinspaceUnion) -> Option::<LinspaceUnion> {
+    fn map(&self, ln_union: &mut LinspaceUnion) -> Option<LinspaceUnion> {
         if let Some(mut ln) = ln_union.extract(self.from, self.range) {
             if self.from > self.target {
                 ln.negative_shift(self.from - self.target);
@@ -34,7 +31,7 @@ impl MapSegment {
         return None;
     }
 
-    fn parse(line: &String) -> Option::<MapSegment> {
+    fn parse(line: &String) -> Option<MapSegment> {
         let numbers = parse_numbers(line);
 
         if numbers.len() != 3 {
@@ -49,12 +46,10 @@ impl MapSegment {
     }
 }
 
-
 struct Map {
-    segments: Vec::<MapSegment>,
+    segments: Vec<MapSegment>,
     name: String,
 }
-
 
 impl Map {
     fn map(&self, ln_union: &mut LinspaceUnion) {
@@ -71,8 +66,8 @@ impl Map {
         }
     }
 
-    fn parse(lines_iterable: &mut dyn Iterator<Item=Result<String, Error>>) -> Option::<Map> {
-        let mut name: Option::<String> = None;
+    fn parse(lines_iterable: &mut dyn Iterator<Item = Result<String, Error>>) -> Option<Map> {
+        let mut name: Option<String> = None;
 
         while let Some(line) = lines_iterable.next() {
             if let Ok(ip) = line {
@@ -108,8 +103,7 @@ impl Map {
     }
 }
 
-
-fn parse_numbers(line: &String) -> Vec::<u64> {
+fn parse_numbers(line: &String) -> Vec<u64> {
     let mut numbers = vec![];
 
     for cap in NUMBER_REGEX.captures_iter(line) {
@@ -119,17 +113,15 @@ fn parse_numbers(line: &String) -> Vec::<u64> {
     numbers
 }
 
-
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    #[arg(index=1)]
+    #[arg(index = 1)]
     input_file: String,
 
     #[arg(short, long, default_value_t = false)]
     ranges: bool,
 }
-
 
 fn main() {
     let args = Args::parse();
@@ -138,9 +130,9 @@ fn main() {
 
     let numbers = parse_numbers(
         &lines
-        .next()
-        .expect("first line should contain numbers")
-        .expect("first line should contain numbers")
+            .next()
+            .expect("first line should contain numbers")
+            .expect("first line should contain numbers"),
     );
 
     let mut ln_union = LinspaceUnion::new();
