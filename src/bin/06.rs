@@ -63,7 +63,7 @@ fn solve_equation(a: f64, b: f64, c: f64) -> Option::<(u64, u64)> {
         return None;
     }
 
-    return Some((start, end));
+    Some((start, end))
 }
 
 
@@ -72,7 +72,7 @@ fn solver(t: u64, d: u64) -> u64 {
         return x2 - x1 + 1;
     }
 
-    return 0;
+    0
 }
 
 
@@ -106,8 +106,8 @@ fn main() {
     ;
 
     if args.ignore_spaces {
-        times_str = times_str.replace(" ", "");
-        distances_str = distances_str.replace(" ", "");
+        times_str = times_str.replace(' ', "");
+        distances_str = distances_str.replace(' ', "");
     }
 
 
@@ -123,7 +123,7 @@ fn main() {
         if result == 0 {
             result = possible_time;
         } else {
-            result = result * possible_time;
+            result *= possible_time;
         }
     }
 

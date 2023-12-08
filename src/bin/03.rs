@@ -76,7 +76,7 @@ fn process_line(prev_line: &String, cur_line: &String, next_line: &String) -> (i
         }
     }
 
-    return (part_number_sum, gear_ratio);
+    (part_number_sum, gear_ratio)
 }
 
 

@@ -16,7 +16,7 @@ fn process_line(line: &String) -> Option::<usize> {
     // using hash sets for funsies, i know with small number of elements
     // it's not worth it, but wanna learn it
     let winning = NUMBER_REGEX.captures_iter(
-        &parsed_line.name("winning").unwrap().as_str()
+        parsed_line.name("winning").unwrap().as_str()
     ).map(
         |c| c.extract::<1>().1[0]
         .parse::<u32>()
@@ -24,7 +24,7 @@ fn process_line(line: &String) -> Option::<usize> {
     ).collect::<HashSet<u32>>();
 
     let have = NUMBER_REGEX.captures_iter(
-        &parsed_line.name("have").unwrap().as_str()
+        parsed_line.name("have").unwrap().as_str()
     ).map(
         |c| c.extract::<1>().1[0]
         .parse::<u32>()
@@ -37,7 +37,7 @@ fn process_line(line: &String) -> Option::<usize> {
         return None;
     }
 
-    return Some(common);
+    Some(common)
 }
 
 
@@ -57,7 +57,7 @@ fn main() {
 
             if let Ok(ip) = line {
                 if let Some(common) = process_line(&ip) {
-                    points += (2 as i32).pow(common as u32 - 1);
+                    points += 2_i32.pow(common as u32 - 1);
 
                     for j in 1..common+1 {
                         for _ in 0..amount_of_current_card {

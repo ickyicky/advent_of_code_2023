@@ -14,7 +14,7 @@ struct Game {
 
 impl Game {
     fn power (&self) -> u32 {
-        return self.max_red * self.max_green * self.max_blue;
+        self.max_red * self.max_green * self.max_blue
     }
 }
 
@@ -28,13 +28,13 @@ lazy_static! {
 
 
 fn max_matching(line: &String, regex: &Regex) -> u32 {
-    let max = regex.captures_iter(&line).map(
+    let max = regex.captures_iter(line).map(
         |c| c.extract::<1>().1[0]
         .parse::<u32>()
         .expect("invalid number found with regex")
     ).max().expect("no match found");
 
-    return max;
+    max
 }
 
 fn process_line(line: &String) -> Game {
@@ -43,12 +43,12 @@ fn process_line(line: &String) -> Game {
     let green = max_matching(line, &GREEN_REGEX);
     let blue = max_matching(line, &BLUE_REGEX);
 
-    return Game {
+    Game {
         id: game_id,
         max_red: red,
         max_green: green,
         max_blue: blue,
-    };
+    }
 }
 
 

@@ -11,9 +11,9 @@ fn process_line(
     let mut last_num = None;
 
     // search first digit or word in the line
-    while temp.len() > 0 {
-        let first_char = temp.chars().nth(0).unwrap();
-        if first_char.is_digit(10) {
+    while !temp.is_empty() {
+        let first_char = temp.chars().next().unwrap();
+        if first_char.is_ascii_digit() {
             first_num = Some(first_char.to_digit(10).unwrap());
             break
         } else {
@@ -36,9 +36,9 @@ fn process_line(
     }
 
     // search last digit or word in the line
-    while temp.len() > 0 {
+    while !temp.is_empty() {
         let last_char = temp.chars().nth(temp.len() - 1).unwrap();
-        if last_char.is_digit(10) {
+        if last_char.is_ascii_digit() {
             last_num = Some(last_char.to_digit(10).unwrap());
             break
         } else {

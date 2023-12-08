@@ -13,7 +13,7 @@ pub struct LinspaceUnion {
 
 impl Linspace {
     pub fn end(&self) -> u64 {
-        return self.start + self.len - 1;
+        self.start + self.len - 1
     }
 
     pub fn shift(&mut self, shift: u64) {
@@ -25,19 +25,25 @@ impl Linspace {
     }
 
     pub fn new(start: u64, len: u64) -> Linspace {
-        return Linspace {
+        Linspace {
             start,
             len,
-        };
+        }
     }
 }
 
 
+impl Default for LinspaceUnion {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl LinspaceUnion {
     pub fn new() -> LinspaceUnion {
-        return LinspaceUnion {
+        LinspaceUnion {
             linspaces: vec![],
-        };
+        }
     }
 
     pub fn push(&mut self, linspace: Linspace) {
@@ -107,7 +113,7 @@ impl LinspaceUnion {
             }
         }
 
-        if linspaces.len() > 0 {
+        if !linspaces.is_empty() {
             for i in to_remove.iter().rev() {
                 self.linspaces.remove(*i);
             }
@@ -123,7 +129,7 @@ impl LinspaceUnion {
             );
         }
 
-        return None;
+        None
     }
 
     pub fn extend(&mut self, other: &LinspaceUnion) {
