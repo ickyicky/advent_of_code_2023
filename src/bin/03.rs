@@ -1,10 +1,10 @@
 use advent_of_code_2023::utils::argparse::read_arg;
 use advent_of_code_2023::utils::file_reader::read_lines;
+use advent_of_code_2023::utils::misc::NUMBER_REGEX;
 use lazy_static::lazy_static;
 use regex::Regex;
 
 lazy_static! {
-    static ref NUMBER_REGEX: Regex = Regex::new(r"(\d+)").expect("invalid regex");
     static ref GREAR_REGEX: Regex = Regex::new(r"(\*{1})").expect("invalid regex");
 }
 

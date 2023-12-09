@@ -5,9 +5,9 @@ use std::io::Error;
 
 use advent_of_code_2023::linspace::{Linspace, LinspaceUnion};
 use advent_of_code_2023::utils::file_reader::read_lines;
+use advent_of_code_2023::utils::misc::parse_numbers;
 
 lazy_static! {
-    static ref NUMBER_REGEX: Regex = Regex::new(r"(\d+)").expect("invalid regex");
     static ref MAP_REGEX: Regex = Regex::new(r"\w+-to-(\w+) map:").expect("invalid regex");
 }
 
@@ -101,16 +101,6 @@ impl Map {
             name: name.unwrap(),
         });
     }
-}
-
-fn parse_numbers(line: &String) -> Vec<u64> {
-    let mut numbers = vec![];
-
-    for cap in NUMBER_REGEX.captures_iter(line) {
-        numbers.push(cap[1].parse::<u64>().unwrap());
-    }
-
-    numbers
 }
 
 #[derive(Parser, Debug)]

@@ -1,22 +1,6 @@
-use clap::Parser;
-use lazy_static::lazy_static;
-use regex::Regex;
-
 use advent_of_code_2023::utils::file_reader::read_lines;
-
-lazy_static! {
-    static ref NUMBER_REGEX: Regex = Regex::new(r"(\d+)").expect("invalid regex");
-}
-
-fn parse_numbers(line: &String) -> Vec<u64> {
-    let mut numbers = vec![];
-
-    for cap in NUMBER_REGEX.captures_iter(line) {
-        numbers.push(cap[1].parse::<u64>().unwrap());
-    }
-
-    numbers
-}
+use advent_of_code_2023::utils::misc::parse_numbers;
+use clap::Parser;
 
 fn solve_equation(a: f64, b: f64, c: f64) -> Option<(u64, u64)> {
     let delta = b * b - 4.0 * a * c;

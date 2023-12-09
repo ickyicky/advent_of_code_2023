@@ -1,16 +1,17 @@
 use advent_of_code_2023::utils::argparse::read_arg;
 use advent_of_code_2023::utils::file_reader::read_lines;
+use advent_of_code_2023::utils::misc::NUMBER_REGEX;
+
 use lazy_static::lazy_static;
 use regex::Regex;
 use std::collections::HashSet;
 
 lazy_static! {
-    static ref NUMBER_REGEX: Regex = Regex::new(r"(\d+)").expect("invalid regex");
     static ref GAME_CARD_REGEX: Regex =
         Regex::new(r"^Card +\d+:(?P<winning>[\d ]+) \| (?P<have>[\d ]+)$").expect("invalid regex");
 }
 
-fn process_line(line: &String) -> Option<usize> {
+fn process_line(line: &str) -> Option<usize> {
     let parsed_line = GAME_CARD_REGEX.captures(line).expect("invalid line");
 
     // using hash sets for funsies, i know with small number of elements
